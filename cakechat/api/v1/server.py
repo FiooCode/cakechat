@@ -6,12 +6,20 @@ from cakechat.config import EMOTIONS_TYPES, DEFAULT_CONDITION
 from cakechat.utils.logger import get_logger
 from cakechat.utils.profile import timer
 
+# Import our custom model that loads our chatbots.
+from cakechat.api.v1.model import ChatBot
+custom_model_dir = "gs://ml-store12/save_path"
+
+chatbot = ChatBot(custom_model_dir, buckets=True)
+chatbot.load_model()
+chatbots = {"ubuntu_fanatic": chatbot}
+
 _logger = get_logger(__name__)
 
 app = Flask(__name__)
 
 
-@app.route('/cakechat_api/v1/actions/get_response', methods=['POST'])
+@app.route('/chat_api/get_response', methods=['POST'])
 @timer
 def get_model_response():
     params = request.get_json()
@@ -25,11 +33,18 @@ def get_model_response():
         return get_api_error_response('Malformed request: %s' % str(e), 400, _logger)
 
     emotion = params.get('emotion', DEFAULT_CONDITION)
-    if emotion not in EMOTIONS_TYPES:
+    custom_chatbot = chatbots.get(emotion)
+
+    if emotion not in EMOTIONS_TYPES and not custom_chatbot:
         return get_api_error_response('Malformed request, emotion param "%s" is not in emotion list %s' %
                                       (emotion, list(EMOTIONS_TYPES)), 400, _logger)
-
-    response = get_response(dialog_context, emotion)
+    if custom_chatbot:
+        try:
+            response = custom_chatbot.make_prediction(dialog_context[-1])[0]
+        except IndexError:
+            response = "I'm not sure."
+    else:
+        response = get_response(dialog_context, emotion)
 
     if not response:
         _logger.error('No response for context: %s; emotion "%s"' % (dialog_context, emotion))
