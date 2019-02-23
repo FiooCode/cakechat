@@ -46,7 +46,7 @@ def calculate_lexical_similarity(x_sequences, y_sequences, tfidf_vectorizer):
 
 def _calculate_tfidf_vectorizer(base_corpus_name=BASE_CORPUS_NAME):
     index_to_token = load_index_to_item(get_index_to_token_path(base_corpus_name))
-    token_to_index = {v: k for k, v in index_to_token.items()}
+    token_to_index = {v: k for k, v in list(index_to_token.items())}
     train_lines = _load_train_lines()
     tfidf_vectorizer = TfidfVectorizer(tokenizer=get_tokens_sequence, vocabulary=token_to_index)
     tfidf_vectorizer.fit(train_lines)

@@ -71,7 +71,7 @@ def init_csv_writer(fh, output_seq_len, model_params_str):
 
 
 def save_metrics(metrics, model_name):
-    for metric_name, metric_value in metrics.items():
+    for metric_name, metric_value in list(metrics.items()):
         _tensorboard_metrics_plotter.plot(model_name, metric_name, float(metric_value))
 
 

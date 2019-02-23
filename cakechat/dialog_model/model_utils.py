@@ -18,8 +18,7 @@ _logger = get_logger(__name__)
 
 
 def transform_conditions_to_ids(conditions, condition_to_index, n_dialogs):
-    condition_ids_iterator = map(
-        lambda condition: condition_to_index.get(condition, condition_to_index[DEFAULT_CONDITION]), conditions)
+    condition_ids_iterator = [condition_to_index.get(condition, condition_to_index[DEFAULT_CONDITION]) for condition in conditions]
     condition_ids = np.full(n_dialogs, condition_to_index[DEFAULT_CONDITION], dtype=np.int32)
     for sample_idx, condition_id in enumerate(condition_ids_iterator):
         condition_ids[sample_idx] = condition_id
@@ -128,9 +127,9 @@ def transform_token_ids_to_sentences(y_ids, index_to_token):
     n_responses, n_tokens = y_ids.shape
 
     responses = []
-    for resp_idx in xrange(n_responses):
+    for resp_idx in range(n_responses):
         response_tokens = []
-        for token_idx in xrange(n_tokens):
+        for token_idx in range(n_tokens):
             token_to_add = index_to_token[y_ids[resp_idx, token_idx]]
 
             if token_to_add in [SPECIAL_TOKENS.EOS_TOKEN, SPECIAL_TOKENS.PAD_TOKEN]:
@@ -160,11 +159,11 @@ def transform_context_token_ids_to_sentences(x_ids, index_to_token):
     n_samples, n_contexts, n_tokens = x_ids.shape
 
     samples = []
-    for sample_idx in xrange(n_samples):
+    for sample_idx in range(n_samples):
         context_samples = []
-        for cont_idx in xrange(n_contexts):
+        for cont_idx in range(n_contexts):
             sample_tokens = []
-            for token_idx in xrange(n_tokens):
+            for token_idx in range(n_tokens):
                 token_to_add = index_to_token[x_ids[sample_idx, cont_idx, token_idx]]
 
                 if token_to_add == SPECIAL_TOKENS.EOS_TOKEN or token_to_add == SPECIAL_TOKENS.PAD_TOKEN:
@@ -201,10 +200,10 @@ def _get_token_vector(token, w2v_model):
 def transform_w2v_model_to_matrix(w2v_model, index_to_token):
     _logger.info('Preparing embedding matrix based on w2v_model and index_to_token dict')
 
-    token_to_index = {v: k for k, v in index_to_token.items()}
+    token_to_index = {v: k for k, v in list(index_to_token.items())}
     tokens_num = len(index_to_token)
     output = np.zeros((tokens_num, WORD_EMBEDDING_DIMENSION), dtype=theano.config.floatX)
-    for token in index_to_token.values():
+    for token in list(index_to_token.values()):
         idx = token_to_index[token]
         output[idx] = _get_token_vector(token, w2v_model)
 

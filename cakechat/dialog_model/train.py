@@ -223,7 +223,7 @@ def train_model(nn_model):
     total_training_time = 0
     start_time = time.time()
 
-    for epoch_id in xrange(EPOCHS_NUM):
+    for epoch_id in range(EPOCHS_NUM):
         _logger.info('Starting epoch #{}'.format(epoch_id))
 
         for train_batch in get_training_batch(datasets_collection.train,

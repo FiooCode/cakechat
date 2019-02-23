@@ -24,9 +24,9 @@ def get_dialog_lines_and_conditions(dialog_lines, text_field_name, condition_fie
     Splits one dialog_lines generator into two generators - one for conditions and one for dialog lines
     """
     conditions_iter, dialog_lines_iter = file_buffered_tee(
-        map(lambda line: [line[condition_field_name], line[text_field_name]], dialog_lines))
-    conditions_iter = map(itemgetter(0), conditions_iter)
-    dialog_lines_iter = map(itemgetter(1), dialog_lines_iter)
+        [[line[condition_field_name], line[text_field_name]] for line in dialog_lines])
+    conditions_iter = list(map(itemgetter(0), conditions_iter))
+    dialog_lines_iter = list(map(itemgetter(1), dialog_lines_iter))
     return dialog_lines_iter, conditions_iter
 
 

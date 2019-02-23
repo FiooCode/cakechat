@@ -55,11 +55,11 @@ class CakeChatModel(object):
             initialization
         """
         self._index_to_token = index_to_token
-        self._token_to_index = {v: k for k, v in index_to_token.items()}
+        self._token_to_index = {v: k for k, v in list(index_to_token.items())}
         self._vocab_size = len(self._index_to_token)
 
         self._index_to_condition = index_to_condition
-        self._condition_to_index = {v: k for k, v in index_to_condition.items()}
+        self._condition_to_index = {v: k for k, v in list(index_to_condition.items())}
         self._condition_ids_num = len(self._condition_to_index)
         self._condition_embedding_dim = condition_embedding_dim
 
@@ -239,7 +239,7 @@ class CakeChatModel(object):
         # input shape = (batch_size * input_context_size, input_seq_len, embedding_dimension)
         self._add_forward_backward_encoder_layer()
 
-        for enc_layer_id in xrange(1, self._encoder_depth):
+        for enc_layer_id in range(1, self._encoder_depth):
             is_last_encoder_layer = enc_layer_id == self._encoder_depth - 1
             return_only_final_state = is_last_encoder_layer
 
@@ -308,7 +308,7 @@ class CakeChatModel(object):
 
         self._net['dec_0'] = self._net['dec_concated_input']
 
-        for dec_layer_id in xrange(1, self._decoder_depth + 1):
+        for dec_layer_id in range(1, self._decoder_depth + 1):
             # input shape = (batch_size, input_seq_len, embedding_dimension + hidden_dimension)
             self._net['dec_' + str(dec_layer_id)] = GRULayer(
                 incoming=self._net['dec_' + str(dec_layer_id - 1)],
@@ -485,7 +485,7 @@ class CakeChatModel(object):
         output_probs = self._get_nn_output(remove_last_output=False)
         new_hiddens = [
             get_output(self._net['dec_{}'.format(layer_id)], deterministic=True)
-            for layer_id in xrange(1, self._decoder_depth + 1)
+            for layer_id in range(1, self._decoder_depth + 1)
         ]
 
         tranformed_output_probs = self._perform_temperature_transform(output_probs, self._temperature)

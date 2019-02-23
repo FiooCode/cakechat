@@ -18,7 +18,7 @@ warmup_predictor(_cakechat_model, PREDICTION_MODE)
 
 
 def _get_non_offensive_response_using_fast_sampling(context_tokens_ids, condition_id):
-    for _ in xrange(SAMPLING_ATTEMPTS_NUM):
+    for _ in range(SAMPLING_ATTEMPTS_NUM):
         response = get_nn_responses(
             context_tokens_ids, _cakechat_model, PREDICTION_MODES.sampling, condition_ids=condition_id)[0][0]
 

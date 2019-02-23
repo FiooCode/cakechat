@@ -19,7 +19,7 @@ class TokenSampler(object):
         self._batch_size = batch_size
         self._banned_tokens_ids = banned_tokens_ids
         self._non_penalizable_tokens_ids = non_penalizable_tokens_ids
-        self._used_tokens_ids = [[] for _ in xrange(batch_size)]
+        self._used_tokens_ids = [[] for _ in range(batch_size)]
         self._repetition_penalization_coefficient = repetition_penalization_coefficient
 
     def sample(self, probabilities, sample_idx, temperature=1.0):
@@ -82,7 +82,7 @@ class SamplingCandidatesGenerator(AbstractCandidatesGenerator):
 
         # Fill in first tokens of each response in the batch:
         response_tokens_ids[:, 0] = self._service_tokens_ids.start_token_id
-        for token_idx in xrange(1, output_seq_len):  # Starting with the second token
+        for token_idx in range(1, output_seq_len):  # Starting with the second token
             hidden_states_batch, next_token_probs_batch = \
                 get_next_token_prob_one_step(self._nn_model, thought_vectors, hidden_states_batch,
                                              response_tokens_ids[:, token_idx - 1],  # previous token for each response
@@ -116,7 +116,7 @@ class SamplingCandidatesGenerator(AbstractCandidatesGenerator):
         """
         thought_vectors = get_thought_vectors(self._nn_model, context_tokens_ids)
         sampled_candidates = [
-            self._sample_response(thought_vectors, condition_ids, output_seq_len) for _ in xrange(self._samples_num)
+            self._sample_response(thought_vectors, condition_ids, output_seq_len) for _ in range(self._samples_num)
         ]
 
         # Transpose the result: candidate_id x batch_size x seq_len -> batch_size x candidate_id x seq_len

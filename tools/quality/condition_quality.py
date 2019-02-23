@@ -55,7 +55,7 @@ def calc_perplexity_metrics(nn_model, train_subset, subset_with_conditions, vali
 
 
 def calc_perplexity_by_condition_metrics(nn_model, train):
-    for condition, condition_id in nn_model.condition_to_index.items():
+    for condition, condition_id in list(nn_model.condition_to_index.items()):
         if condition == DEFAULT_CONDITION:
             continue
 
@@ -79,7 +79,7 @@ def predict_for_condition_id(nn_model, x_val, condition_id=None):
 def calc_lexical_similarity_metrics(nn_model, train, questions, tfidf_vectorizer):
     responses_baseline = predict_for_condition_id(nn_model, questions.x)
 
-    for condition, condition_id in nn_model.condition_to_index.items():
+    for condition, condition_id in list(nn_model.condition_to_index.items()):
         if condition == DEFAULT_CONDITION:
             continue
 

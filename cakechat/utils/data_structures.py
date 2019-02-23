@@ -7,4 +7,4 @@ def flatten(xs, constructor=list):
 
 
 def create_namedtuple_instance(name, **kwargs):
-    return collections.namedtuple(name, kwargs.keys())(**kwargs)
+    return collections.namedtuple(name, list(kwargs.keys()))(**kwargs)

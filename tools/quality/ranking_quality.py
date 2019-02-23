@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import os
 import sys
@@ -30,7 +30,7 @@ def _read_testset():
     test_lines = load_file(corpus_path)
 
     testset = defaultdict(set)
-    for i in xrange(0, len(test_lines) - 1, 2):
+    for i in range(0, len(test_lines) - 1, 2):
         context = test_lines[i].strip()
         response = test_lines[i + 1].strip()
         testset[context].add(response)
@@ -53,13 +53,13 @@ def _get_context_to_weighted_responses(nn_model, testset, all_utterances):
 
         scores = get_sequence_score(nn_model, repeated_context_ids, all_utterances_ids)
 
-        context_to_weighted_responses[context] = dict(zip(all_utterances, scores))
+        context_to_weighted_responses[context] = dict(list(zip(all_utterances, scores)))
 
     return context_to_weighted_responses
 
 
 def _compute_metrics(model, testset):
-    all_utterances = list(flatten(testset.values(), set))  # Get all unique responses
+    all_utterances = list(flatten(list(testset.values()), set))  # Get all unique responses
     context_to_weighted_responses = _get_context_to_weighted_responses(model, testset, all_utterances)
 
     test_set_size = len(all_utterances)

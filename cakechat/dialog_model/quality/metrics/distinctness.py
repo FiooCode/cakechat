@@ -14,7 +14,7 @@ def _calculate_distinct_ngrams(prediction_samples, ngram_len):
     ngrams = set()
     for y in prediction_samples:
         # Calculate all n-grams where n = ngram_len. (Get ngram_len cyclic shifts of y and transpose the result)
-        cur_ngrams = zip(*[y[i:] for i in xrange(ngram_len)])  # yapf: disable
+        cur_ngrams = list(zip(*[y[i:] for i in range(ngram_len)]))  # yapf: disable
 
         # Aggregate statistics
         ngrams.update(cur_ngrams)

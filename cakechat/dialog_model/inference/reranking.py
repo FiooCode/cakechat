@@ -14,9 +14,7 @@ from cakechat.utils.profile import timer
 _logger = get_logger(__name__)
 
 
-class AbstractCandidatesReranker(object):
-    __metaclass__ = ABCMeta
-
+class AbstractCandidatesReranker(object, metaclass=ABCMeta):
     @abstractmethod
     def rerank_candidates(self, contexts, all_candidates, condition_ids):
         pass
@@ -104,6 +102,6 @@ class MMIReranker(AbstractCandidatesReranker):
         batch_size = len(contexts)
         # reranked_candidates[i][j] = j-th best response for i-th question
         reranked_candidates = [
-            [all_candidates[i][j] for j in scores_order[i]] for i in xrange(batch_size)  # yapf: disable
+            [all_candidates[i][j] for j in scores_order[i]] for i in range(batch_size)  # yapf: disable
         ]
         return reranked_candidates

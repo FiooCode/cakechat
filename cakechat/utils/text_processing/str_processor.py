@@ -7,7 +7,7 @@ from cakechat.utils.text_processing.config import SPECIAL_TOKENS
 
 _END_CHARS = '.?!'
 
-_tokenizer = nltk.tokenize.RegexpTokenizer(pattern=u'\w+|[^\w\s]')
+_tokenizer = nltk.tokenize.RegexpTokenizer(pattern='\w+|[^\w\s]')
 
 
 def get_tokens_sequence(text, lower=True, check_unicode=True):

@@ -86,7 +86,7 @@ def predict(model_path,
         for cur_params in prediction_params:
             cur_path = '{base_path}_{params_str}.tsv'.format(
                 base_path=default_predictions_path,
-                params_str='_'.join(['{}_{}'.format(k, v) for k, v in cur_params.items()]))
+                params_str='_'.join(['{}_{}'.format(k, v) for k, v in list(cur_params.items())]))
             predictions_paths.append(cur_path)
     else:
         predictions_paths = [default_predictions_path + '.tsv']

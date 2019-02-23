@@ -20,7 +20,7 @@ class Predictor(object):
         output_seq_len = reranked_candidates[0][0].size
         result = np.zeros((batch_size, candidates_num, output_seq_len), dtype=np.int32)
         # Loop here instead of slices because number of candidates for each context may vary here
-        for i in xrange(batch_size):
+        for i in range(batch_size):
             for j, candidate in enumerate(reranked_candidates[i]):
                 if j >= candidates_num:
                     break

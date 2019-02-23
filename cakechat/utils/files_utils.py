@@ -9,9 +9,7 @@ from cakechat.utils.logger import get_logger
 _logger = get_logger(__name__)
 
 
-class AbstractFileResolver(object):
-    __metaclass__ = ABCMeta
-
+class AbstractFileResolver(object, metaclass=ABCMeta):
     def __init__(self, file_path):
         self._file_path = file_path
 
@@ -51,7 +49,7 @@ def load_file(file_path, filter_empty_lines=True):
     with codecs.open(file_path, 'r', 'utf-8') as fh:
         lines = [line.strip() for line in fh.readlines()]
         if filter_empty_lines:
-            lines = list(filter(None, lines))
+            lines = list([_f for _f in lines if _f])
 
         return lines
 
@@ -84,11 +82,11 @@ def get_persisted(factory, persisted_file_name, **kwargs):
     filename = persisted_file_name.encode('utf-8')
 
     if os.path.exists(filename):
-        _logger.info(u'Loading {}'.format(persisted_file_name))
+        _logger.info('Loading {}'.format(persisted_file_name))
         cached = deserialize(filename)
         return cached
 
-    _logger.info(u'Creating {}'.format(persisted_file_name))
+    _logger.info('Creating {}'.format(persisted_file_name))
     data = factory()
     serialize(filename, data, **kwargs)
     return data

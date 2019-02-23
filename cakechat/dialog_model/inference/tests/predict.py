@@ -31,7 +31,7 @@ class TestPredict(unittest.TestCase):
         hidden_states_batch = np.zeros((x_batch.shape[0], DECODER_DEPTH, HIDDEN_LAYER_DIMENSION), dtype=np.float32)
 
         total_log_probs = np.zeros((y_batch.shape[0], y_batch.shape[1] - 1, nn_model.vocab_size))
-        for token_idx in xrange(1, y_batch.shape[1]):
+        for token_idx in range(1, y_batch.shape[1]):
             hidden_states_batch, next_token_log_probs_batch = \
                 get_next_token_log_prob_one_step(nn_model, thought_vectors_batch, hidden_states_batch,
                                                  y_batch[:, token_idx - 1], condition_ids=None)

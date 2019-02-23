@@ -31,7 +31,7 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         expected_token_ids = np.array([2])
         actual_token_ids = token_sampler.sample(probs, sample_idx=0)
@@ -44,7 +44,7 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         expected_token_ids = np.array([2])
         actual_token_ids = token_sampler.sample(probs, sample_idx=0)
@@ -56,12 +56,12 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         adjusted_confidence_level = _CONFIDENCE_LEVEL / len(probs)  # bonferroni correction
         confidence_intervals = [binom.interval(1 - adjusted_confidence_level, _SAMPLES_NUM, p) for p in probs]
-        est_probs_from, est_probs_to = zip(*confidence_intervals)
-        samples = np.array([token_sampler.sample(probs, 0) for _ in xrange(_SAMPLES_NUM)])
+        est_probs_from, est_probs_to = list(zip(*confidence_intervals))
+        samples = np.array([token_sampler.sample(probs, 0) for _ in range(_SAMPLES_NUM)])
         counts = {val: np.sum(samples == val) for val in np.unique(samples)}
 
         for i, _ in enumerate(probs):
@@ -74,7 +74,7 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         expected_token_ids = np.array([0])
         actual_token_ids = token_sampler.sample(probs, sample_idx=0)
@@ -89,7 +89,7 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[0],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         expected_token_ids = np.array([1])
         actual_token_ids = token_sampler.sample(probs, sample_idx=0)
@@ -102,7 +102,7 @@ class TestSampling(unittest.TestCase):
         token_sampler = TokenSampler(
             batch_size=1,
             banned_tokens_ids=[0],
-            non_penalizable_tokens_ids=range(len(probs)),
+            non_penalizable_tokens_ids=list(range(len(probs))),
             repetition_penalization_coefficient=REPETITION_PENALIZE_COEFFICIENT)
         # Token #1 has to be returned even though its probability is really small
         expected_token_ids = np.array([1])
@@ -113,7 +113,7 @@ class TestSampling(unittest.TestCase):
         probs = [0.5, 0.5]
 
         actual_num_nonequal_pairs = 0
-        for _ in xrange(_SAMPLES_NUM):
+        for _ in range(_SAMPLES_NUM):
             token_sampler = TokenSampler(
                 batch_size=1,
                 banned_tokens_ids=[],

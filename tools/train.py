@@ -46,7 +46,7 @@ def _get_w2v_embedding_matrix_by_corpus_path(processed_train_corpus_path, index_
             condition_field_name='condition')
 
         _logger.info('Getting text-filtered train iterator...')
-        train_lines_for_w2v = map(lambda x: x['text'], get_flatten_dialogs(dialogs_for_w2v))
+        train_lines_for_w2v = [x['text'] for x in get_flatten_dialogs(dialogs_for_w2v)]
 
         _logger.info('Getting tokenized train iterator...')
         tokenized_train_lines_for_w2v = ProcessedLinesIterator(

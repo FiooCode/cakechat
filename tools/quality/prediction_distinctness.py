@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import os
 import sys
@@ -28,7 +28,7 @@ def log_distinct_metrics(nn_model, x, condition_ids=None, samples_num=1, ngram_l
     for ngram_length in ngram_lengths:
         scores = [
             calculate_response_ngram_distinctness(x, nn_model, ngram_len=ngram_length, condition_ids=condition_ids)
-            for _ in xrange(samples_num)
+            for _ in range(samples_num)
         ]
         scores_mean = np.mean(scores)
         scores_std = np.std(scores)

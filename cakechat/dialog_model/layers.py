@@ -22,7 +22,7 @@ class RepeatLayer(Layer):
         return tuple([input_shape[0], repeat_times] + list(input_shape[1:]))
 
     def get_output_for(self, input, **kwargs):
-        new_shape = [input.shape[0], 1] + [input.shape[k] for k in xrange(1, input.ndim)]
+        new_shape = [input.shape[0], 1] + [input.shape[k] for k in range(1, input.ndim)]
 
         output = T.reshape(input, new_shape, ndim=input.ndim + 1)  # see the details in pydoc
         output = T.repeat(output, self._n, axis=1)

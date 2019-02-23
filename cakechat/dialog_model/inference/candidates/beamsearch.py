@@ -174,7 +174,7 @@ class BeamsearchCandidatesGenerator(AbstractCandidatesGenerator):
         expanded_beam_scores = np.zeros((self._beam_size * self._beam_size), dtype=np.float32)
         expanded_beam_tokens = np.zeros((self._beam_size * self._beam_size), dtype=np.int32)
 
-        for candidate_idx in xrange(self._beam_size):
+        for candidate_idx in range(self._beam_size):
             # Get beam_size candidates on each step
             next_token_candidates, next_token_scores = \
                 self._get_k_max_elements_indices_and_scores(next_token_score_batch[candidate_idx], self._beam_size)
@@ -219,7 +219,7 @@ class BeamsearchCandidatesGenerator(AbstractCandidatesGenerator):
         self._cur_candidates[:, 1], self._cur_candidates_scores = self._get_k_max_elements_indices_and_scores(
             next_token_score_batch[0], self._beam_size)
 
-        for token_idx in xrange(2, output_seq_len):  # Start from 2 because first token candidates are already filled.
+        for token_idx in range(2, output_seq_len):  # Start from 2 because first token candidates are already filled.
             # This array has shape beam_size x vocab_size. We use this scores to select best tokens for the beam
             # on the next step.
             next_token_score_batch = self._compute_next_token_score_batch(token_idx, condition_id)

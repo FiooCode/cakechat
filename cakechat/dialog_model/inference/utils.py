@@ -23,19 +23,19 @@ def _predict_batch_by_batch(predict_fn, batched_inputs, non_batched_inputs=None,
     if non_batched_inputs is None:
         non_batched_inputs = []
 
-    results = [[] for _ in xrange(num_outputs)]
+    results = [[] for _ in range(num_outputs)]
 
     for inputs_batch in get_training_batch(batched_inputs, batch_size):
         args = list(inputs_batch) + non_batched_inputs
         cur_result = predict_fn(*args)
         if num_outputs > 1:
-            for i in xrange(num_outputs):
+            for i in range(num_outputs):
                 results[i].append(cur_result[i])
         else:
             results[0].append(cur_result)
 
     if num_outputs > 1:
-        return tuple(np.concatenate(results[i]) for i in xrange(num_outputs))
+        return tuple(np.concatenate(results[i]) for i in range(num_outputs))
     else:
         return np.concatenate(results[0])
 
